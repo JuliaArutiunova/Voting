@@ -1,75 +1,95 @@
 package by.it_academy.jd2.storage;
 
 
+import by.it_academy.jd2.dto.DTO;
 import by.it_academy.jd2.dto.DTOResults;
 import by.it_academy.jd2.instance.Artist;
 import by.it_academy.jd2.instance.Comment;
 import by.it_academy.jd2.instance.Genre;
+import by.it_academy.jd2.storage.api.IVotingStorage;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class VotingStorage implements IVotingStorage {
 
-//    class DateTimeAdapter implements JsonSerializer<LocalDateTime> {
-//
-//        @Override
-//        public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
-//            return new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_DATE_TIME));
-//        }
-//    }
+    private static final VotingStorage instance = new VotingStorage();
 
-    private static final String ARTIST_FILEPATH = "C:/Users/arman/OneDrive/Desktop/Java courses/Projects" +
-            "/Voting/src/main/resources/artists.json";
-    private static final String GENRES_FILEPATH = "C:/Users/arman/OneDrive/Desktop/Java courses/Projects" +
-            "/Voting/src/main/resources/genres.json";
+    private class DateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
-//    private static final String COMMENTS_FILEPATH = "C:/Users/arman/OneDrive/Desktop/Java courses/Projects" +
-//            "/Voting/src/main/resources/comments.json";
+        @Override
+        public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+            return new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_DATE_TIME));
+        }
+
+        @Override
+        public LocalDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            return LocalDateTime.parse(jsonElement.getAsString(), DateTimeFormatter.ISO_DATE_TIME);
+        }
+    }
+
+    private final String ARTIST_FILEPATH = getProperty("artists");
+    private final String GENRES_FILEPATH = getProperty("genres");
+    private final String COMMENTS_FILEPATH = getProperty("comments");
+
 
     private Gson gson = new GsonBuilder().setPrettyPrinting()
-            //       .registerTypeAdapter(LocalDateTime.class, new DateTimeAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new DateTimeAdapter())
             .create();
     private Type listTypeArtist = new TypeToken<ArrayList<Artist>>() {
     }.getType();
     private Type listTypeGenres = new TypeToken<ArrayList<Genre>>() {
     }.getType();
-//    private Type listTypeComment = new TypeToken<ArrayList<Comment>>(){
-//
-//    }.getType();
+    private Type listTypeComment = new TypeToken<ArrayList<Comment>>() {
+
+    }.getType();
 
 
     private List<Artist> artistsResults;
     private List<Genre> genresResults;
+    private List<Comment> comments;
 
 
     {
         try {
             artistsResults = gson.fromJson(new FileReader(ARTIST_FILEPATH), listTypeArtist);
             genresResults = gson.fromJson(new FileReader(GENRES_FILEPATH), listTypeGenres);
-//            comments = gson.fromJson(new FileReader(commentsFilePath),listTypeComment);
+            comments = gson.fromJson(new FileReader(COMMENTS_FILEPATH), listTypeComment);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private List<Comment> comments = new ArrayList<>();
 
-
-    @Override
-    public void addComment(Comment comment) {
-        comments.add(comment);
-
+    private VotingStorage() {
     }
 
+
     @Override
+    public void create(DTO dto) {
+        updateArtist(dto.getArtist());
+        updateGenres(dto.getGenres());
+        addComment(dto.getComment());
+    }
+
+    public void addComment(Comment comment) {
+
+        comments.add(comment);
+
+        try (FileWriter fileWriter = new FileWriter(COMMENTS_FILEPATH)) {
+            gson.toJson(comments, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void updateArtist(String artist) {
         for (Artist value : artistsResults) {
             if (value.getName().equals(artist)) {
@@ -84,8 +104,6 @@ public class VotingStorage implements IVotingStorage {
 
     }
 
-
-    @Override
     public void updateGenres(String[] genres) {
         for (String genre : genres) {
             for (Genre genresResult : genresResults) {
@@ -101,11 +119,22 @@ public class VotingStorage implements IVotingStorage {
         }
     }
 
-
-    @Override
     public DTOResults getInfo() {
         return new DTOResults(artistsResults, genresResults, comments);
     }
 
+    public static VotingStorage getInstance() {
+        return instance;
+    }
 
+    public String getProperty(String propertyName) {
+        Properties properties = new Properties();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("address.properties");
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return properties.getProperty(propertyName);
+    }
 }

@@ -5,7 +5,6 @@ import by.it_academy.jd2.dto.DTOResults;
 import by.it_academy.jd2.instance.Comment;
 import by.it_academy.jd2.service.VotingService;
 import by.it_academy.jd2.service.api.IVotingService;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class VotingServlet extends HttpServlet {
 
     private final static IVotingService votingService = VotingService.getInstance();
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy  HH:mm");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy  HH:mm");
 
 
     @Override
@@ -48,10 +47,6 @@ public class VotingServlet extends HttpServlet {
 
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-         printResult(resp);
-    }
 
     public void printResult(HttpServletResponse resp) throws IOException {
 

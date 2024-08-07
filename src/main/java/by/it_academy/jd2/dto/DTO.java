@@ -5,7 +5,7 @@ import by.it_academy.jd2.instance.Comment;
 import java.util.Arrays;
 
 public class DTO {
-    private String userName;
+
     private String artist;
     private String[] genres;
     private Comment comment;
@@ -20,9 +20,7 @@ public class DTO {
         this.comment = comment;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+
 
     public String getArtist() {
         return artist;
@@ -36,9 +34,7 @@ public class DTO {
         return comment;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+
 
     public void setArtist(String artist) {
         this.artist = artist;
@@ -55,11 +51,9 @@ public class DTO {
     @Override
     public String toString() {
         return "DTO{" +
-                "userName='" + userName + '\'' +
-                ", artist='" + artist + '\'' +
+                "artist='" + artist + '\'' +
                 ", genres=" + Arrays.toString(genres) +
-                ", comment='" + comment + '\'' +
+                ", comment=" + comment +
                 '}';
     }
-
 }
