@@ -38,12 +38,25 @@ public class VotingServlet extends HttpServlet {
         String[] genre = req.getParameterValues(GENRE_PARAMETER);
         String comment = req.getParameter(COMMENT_PARAMETER);
 
-        votingService.create(new DTO(artist, genre, new Comment(userName, comment, LocalDateTime.now())));
-
         PrintWriter writer = resp.getWriter();
-        writer.write("<p style=\"font-size:45px;\">Спасибо за участие!</p>");
+        try {
+            votingService.create(new DTO(artist, genre, new Comment(userName, comment, LocalDateTime.now())));
 
-        printResult(resp);
+            writer.write("<p style=\"font-size:45px;\">Спасибо за участие!</p>");
+            printResult(resp);
+
+        } catch (IllegalArgumentException e) {
+            writer.write("<h2>" + "Анкета не принята :(" + "</h2>");
+            writer.write("<p>" + e.getMessage() + "</p>");
+            writer.write("<!DOCTYPE html>\n" +
+                    " <head>\n" +
+                    "  <meta charset=\"utf-8\">\n" +
+                    " </head>\n" +
+                    " <body>\n" +
+                    "  <input type=\"button\" onclick=\"history.back();\" value=\"Вернуться к анкете\"/>" +
+                    " </body>\n" +
+                    "</html>");
+        }
 
     }
 
