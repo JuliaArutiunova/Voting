@@ -8,16 +8,20 @@ import by.it_academy.jd2.instance.Genre;
 import java.util.Comparator;
 import java.util.List;
 
-public class DTOResults {
+public class ResultsDTO {
 
     private List<Artist> artistsResults;
     private List<Genre> genresResults;
     private List<Comment> comments;
 
-    public DTOResults(List<Artist> artistsResults, List<Genre> genresResults, List<Comment> comments) {
+
+
+    public ResultsDTO(List<Artist> artistsResults, List<Genre> genresResults, List<Comment> comments) {
         this.artistsResults = artistsResults;
         this.genresResults = genresResults;
         this.comments = comments;
+
+
     }
 
     public List<Artist> getSortedArtistsResults() {
@@ -34,4 +38,6 @@ public class DTOResults {
         comments.sort(Comparator.comparing(Comment::getDateTime).reversed());
         return comments;
     }
+
+
 }
