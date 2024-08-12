@@ -16,4 +16,13 @@
         <servlet-name>VotingServlet</servlet-name>
         <url-pattern>/voting</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ResultsServlet</servlet-name>
+        <servlet-class>by.it_academy.jd2.controller.ResultsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResultsServlet</servlet-name>
+        <url-pattern>/results</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -1,18 +1,18 @@
 [
   {
-    "name": "Lady Gaga",
-    "votes": 3
-  },
-  {
     "name": "Rammstein",
-    "votes": 2
-  },
-  {
-    "name": "Pink Floyd",
     "votes": 1
   },
   {
-    "name": "Akute",
+    "name": "Lady Gaga",
+    "votes": 1
+  },
+  {
+    "name": "Pink Floyd",
     "votes": 0
+  },
+  {
+    "name": "Akute",
+    "votes": 1
   }
 ]

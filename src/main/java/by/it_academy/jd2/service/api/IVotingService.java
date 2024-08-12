@@ -1,7 +1,7 @@
 package by.it_academy.jd2.service.api;
 
-import by.it_academy.jd2.dto.DTO;
+import by.it_academy.jd2.dto.InfoFromClientDTO;
 
 public interface IVotingService {
-    void create(DTO dto);
+    void create(InfoFromClientDTO dto);
 }

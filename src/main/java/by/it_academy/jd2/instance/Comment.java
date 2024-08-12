@@ -1,6 +1,7 @@
 package by.it_academy.jd2.instance;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Comment {
     private String author;
@@ -36,6 +37,7 @@ public class Comment {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
+
 
     @Override
     public String toString() {

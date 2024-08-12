@@ -1,19 +1,16 @@
 package by.it_academy.jd2.controller;
 
-import by.it_academy.jd2.dto.DTO;
-import by.it_academy.jd2.dto.DTOResults;
-import by.it_academy.jd2.instance.Comment;
+import by.it_academy.jd2.dto.InfoFromClientDTO;
 import by.it_academy.jd2.service.VotingService;
 import by.it_academy.jd2.service.api.IVotingService;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 public class VotingServlet extends HttpServlet {
@@ -24,8 +21,19 @@ public class VotingServlet extends HttpServlet {
 
     private final static IVotingService votingService = VotingService.getInstance();
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy  HH:mm");
+    private List<String> artists = VotingService.getInstance().getNames().getArtistNames();
+    private List<String> genres = VotingService.getInstance().getNames().getGenresNames();
 
+  //  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy  HH:mm");
+
+
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("artists", artists);
+        req.setAttribute("genres", genres);
+        req.getRequestDispatcher("/template/votingForm.jsp").forward(req,resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException
@@ -38,67 +46,18 @@ public class VotingServlet extends HttpServlet {
         String[] genre = req.getParameterValues(GENRE_PARAMETER);
         String comment = req.getParameter(COMMENT_PARAMETER);
 
-        PrintWriter writer = resp.getWriter();
-        try {
-            votingService.create(new DTO(artist, genre, new Comment(userName, comment, LocalDateTime.now())));
+        req.setAttribute("name", userName);
 
-            writer.write("<p style=\"font-size:45px;\">Спасибо за участие!</p>");
-            printResult(resp);
+
+        try {
+            votingService.create(new InfoFromClientDTO(userName, artist, genre, comment));
+            req.getRequestDispatcher("/template/accepted.jsp").forward(req, resp);
 
         } catch (IllegalArgumentException e) {
-            writer.write("<h2>" + "Анкета не принята :(" + "</h2>");
-            writer.write("<p>" + e.getMessage() + "</p>");
-            writer.write("<!DOCTYPE html>\n" +
-                    " <head>\n" +
-                    "  <meta charset=\"utf-8\">\n" +
-                    " </head>\n" +
-                    " <body>\n" +
-                    "  <input type=\"button\" onclick=\"history.back();\" value=\"Вернуться к анкете\"/>" +
-                    " </body>\n" +
-                    "</html>");
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher("/template/error.jsp").forward(req, resp);
         }
 
     }
 
-
-    public void printResult(HttpServletResponse resp) throws IOException {
-
-        DTOResults results = VotingService.getInstance().getResults();
-
-        PrintWriter writer = resp.getWriter();
-        writer.write("""
-                <head>
-                    <meta charset="UTF-8">
-                </head>""");
-        writer.write("<h1>Результаты:</h1>");
-
-        writer.write("<h3>Любимая группа</h3>");
-        writer.write("""
-                <table style="width:30%">
-                  <tr>
-                    <th>Исполнитель</th>
-                    <th>Набрано голосов</th>
-                  </tr>""");
-        results.getSortedArtistsResults().forEach(artist -> writer.write("<tr><td style=\"text-align:center;\">" + artist.getName()
-                + "</td><td style=\"text-align:center;\">" + artist.getVotes() + "</td></tr>"));
-        writer.write(" </table>");
-
-
-        writer.write("<h3>Любимый жанр</h3>");
-        writer.write("""
-                <table style="width:30%">
-                  <tr>
-                    <th>Жанр</th>
-                    <th>Набрано голосов</th>
-                 </tr>""");
-        results.getSortedGenresResults().forEach(genre -> writer.write("<tr><td style=\"text-align:center;\">" + genre.getName()
-                + "</td><td style=\"text-align:center;\">" + genre.getVotes() + "</td></tr>"));
-        writer.write(" </table>");
-
-        writer.write("<h3>Комментарии:</h3>");
-        results.getSortedComments().forEach(comment -> writer.write("<p>" + formatter.format(comment.getDateTime())
-                + " " + comment.getAuthor() + " " + comment.getText() + "</p>"));
-
-
-    }
 }

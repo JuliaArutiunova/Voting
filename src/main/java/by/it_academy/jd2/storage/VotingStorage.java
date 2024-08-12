@@ -1,8 +1,9 @@
 package by.it_academy.jd2.storage;
 
 
-import by.it_academy.jd2.dto.DTO;
-import by.it_academy.jd2.dto.DTOResults;
+import by.it_academy.jd2.dto.VoteDTO;
+import by.it_academy.jd2.dto.ResultsDTO;
+import by.it_academy.jd2.dto.NamesDTO;
 import by.it_academy.jd2.instance.Artist;
 import by.it_academy.jd2.instance.Comment;
 import by.it_academy.jd2.instance.Genre;
@@ -43,19 +44,18 @@ public class VotingStorage implements IVotingStorage {
     private Gson gson = new GsonBuilder().setPrettyPrinting()
             .registerTypeAdapter(LocalDateTime.class, new DateTimeAdapter())
             .create();
+
     private Type listTypeArtist = new TypeToken<ArrayList<Artist>>() {
     }.getType();
     private Type listTypeGenres = new TypeToken<ArrayList<Genre>>() {
     }.getType();
     private Type listTypeComment = new TypeToken<ArrayList<Comment>>() {
-
     }.getType();
 
 
     private List<Artist> artistsResults;
     private List<Genre> genresResults;
     private List<Comment> comments;
-
 
     {
         try {
@@ -67,13 +67,16 @@ public class VotingStorage implements IVotingStorage {
         }
     }
 
+    private final List<String> artistNames = artistsResults.stream().map(Artist::getName).toList();
+    private final List<String> genresNames = genresResults.stream().map(Genre::getName).toList();
+
 
     private VotingStorage() {
     }
 
 
     @Override
-    public void create(DTO dto) {
+    public void create(VoteDTO dto) {
         updateArtist(dto.getArtist());
         updateGenres(dto.getGenres());
         addComment(dto.getComment());
@@ -119,9 +122,14 @@ public class VotingStorage implements IVotingStorage {
         }
     }
 
-    public DTOResults getInfo() {
-        return new DTOResults(artistsResults, genresResults, comments);
+    public ResultsDTO getInfo() {
+        return new ResultsDTO(artistsResults, genresResults, comments);
     }
+
+    public NamesDTO getNames() {
+        return new NamesDTO(artistNames, genresNames);
+    }
+
 
     public static VotingStorage getInstance() {
         return instance;

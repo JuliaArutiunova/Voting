@@ -1,39 +1,39 @@
 [
   {
-    "name": "Symphonic Metal",
-    "votes": 3
-  },
-  {
-    "name": "Pop",
-    "votes": 3
-  },
-  {
-    "name": "Rap",
+    "name": "Classic Rock",
     "votes": 3
   },
   {
     "name": "Heavy Metal",
-    "votes": 3
+    "votes": 1
+  },
+  {
+    "name": "Symphonic Metal",
+    "votes": 2
   },
   {
     "name": "Punk Rock",
     "votes": 1
   },
   {
-    "name": "Classic Rock",
-    "votes": 3
-  },
-  {
-    "name": "EDM",
-    "votes": 2
-  },
-  {
-    "name": "Jazz",
+    "name": "Rap",
     "votes": 1
   },
   {
-    "name": "Folk",
+    "name": "EDM",
+    "votes": 1
+  },
+  {
+    "name": "Pop",
+    "votes": 1
+  },
+  {
+    "name": "Jazz",
     "votes": 0
+  },
+  {
+    "name": "Folk",
+    "votes": 1
   },
   {
     "name": "Classic",
