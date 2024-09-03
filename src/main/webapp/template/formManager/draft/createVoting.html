@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Создать новое голосование</h2>
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<div class="container">
+<form  action="create" method="POST">
+    <br>
+    <fieldset>
+        <legend>Любимый исполнитель (минимум 2)</legend>
+        1<input type="text" name="artist" size=45 placeholder="Исполнитель" required><br>
+        2<input type="text" name="artist" size=45 placeholder="Исполнитель" required><br>
+
+        <div ID="artists">
+            <input type="button" value="Добавить артиста+" onClick="AddArtist();" ID="addArtist">
+        </div>
+    </fieldset>
+    <br>
+    <br>
+    <fieldset>
+        <legend>Любимый Жанр (минимум 2)</legend>
+        1<input type="text" name="genre" size=45 placeholder="Жанр" required><br>
+        2<input type="text" name="genre" size=45 placeholder="Жанр" required><br>
+
+        <div ID="genres">
+            <input type="button" value="Добавить жанр+" onClick="AddGenre();" ID="addGenre">
+        </div>
+        <br>
+    </fieldset>
+    <br>
+    <input type='submit' value='Готово'>
+</form>
+</div>
+<script type="text/javascript">
+        var artists=2;
+        function AddArtist() {
+        div=document.getElementById("artists");
+        button=document.getElementById("addArtist");
+        artists++;
+        newitem=artists;
+        newitem+="<input type=text name=artist" + artists;
+        newitem+=" size=45 placeholder=Исполнитель><br>";
+        newnode=document.createElement("span");
+        newnode.innerHTML=newitem;
+        div.insertBefore(newnode,button);
+        }
+
+        var genres=2;
+        function AddGenre() {
+        div=document.getElementById("genres");
+        button=document.getElementById("addGenre");
+        genres++;
+        newitem=genres;
+        newitem+="<input type=text name=genre" + genres;
+        newitem+=" size=45 placeholder=Жанр><br>";
+        newnode=document.createElement("span");
+        newnode.innerHTML=newitem;
+        div.insertBefore(newnode,button);
+        }
+</script>
+
+</body>
+</html>

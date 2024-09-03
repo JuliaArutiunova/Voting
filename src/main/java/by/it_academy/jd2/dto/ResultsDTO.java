@@ -1,37 +1,21 @@
 package by.it_academy.jd2.dto;
 
-
-import by.it_academy.jd2.instance.Artist;
-import by.it_academy.jd2.instance.Comment;
-import by.it_academy.jd2.instance.Genre;
+import by.it_academy.jd2.entity.Comment;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResultsDTO {
-
-    private List<Artist> artistsResults;
-    private List<Genre> genresResults;
-    private List<Comment> comments;
+    Map<Integer,Integer> votes;
+    List<Comment> comments;
 
 
 
-    public ResultsDTO(List<Artist> artistsResults, List<Genre> genresResults, List<Comment> comments) {
-        this.artistsResults = artistsResults;
-        this.genresResults = genresResults;
+    public ResultsDTO(Map<Integer, Integer> votes, List<Comment> comments) {
+        this.votes = votes;
         this.comments = comments;
-
-
-    }
-
-    public List<Artist> getSortedArtistsResults() {
-        artistsResults.sort(Comparator.comparing(Artist::getVotes).reversed());
-        return artistsResults;
-    }
-
-    public List<Genre> getSortedGenresResults() {
-        genresResults.sort(Comparator.comparing(Genre::getVotes).reversed());
-        return genresResults;
     }
 
     public List<Comment> getSortedComments() {
@@ -40,4 +24,21 @@ public class ResultsDTO {
     }
 
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Map<Integer, Integer> getVotes() {
+        return votes;
+    }
+
+
+
+    public void setVotes(Map<Integer, Integer> votes) {
+        this.votes = votes;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

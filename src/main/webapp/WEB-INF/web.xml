@@ -5,8 +5,7 @@
         xsi:schemaLocation = "https://jakarta.ee/xml/ns/jakartaee
         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
         version = "6.0"
-        metadata-complete = "false"
->
+        metadata-complete = "false">
     <display-name>Голосование</display-name>
 <servlet>
     <servlet-name>VotingServlet</servlet-name>
@@ -18,11 +17,29 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ResultsServlet</servlet-name>
-        <servlet-class>by.it_academy.jd2.controller.ResultsServlet</servlet-class>
+        <servlet-name>ResultServlet</servlet-name>
+        <servlet-class>by.it_academy.jd2.controller.ResultServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ResultsServlet</servlet-name>
+        <servlet-name>ResultServlet</servlet-name>
         <url-pattern>/results</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateVotingServlet</servlet-name>
+        <servlet-class>by.it_academy.jd2.controller.formManager.CreateVotingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateVotingServlet</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditFormServlet</servlet-name>
+        <servlet-class>by.it_academy.jd2.controller.formManager.EditFormServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditFormServlet</servlet-name>
+        <url-pattern>/edit</url-pattern>
     </servlet-mapping>
 </web-app>

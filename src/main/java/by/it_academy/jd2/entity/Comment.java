@@ -1,7 +1,6 @@
-package by.it_academy.jd2.instance;
+package by.it_academy.jd2.entity;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Comment {
     private String author;

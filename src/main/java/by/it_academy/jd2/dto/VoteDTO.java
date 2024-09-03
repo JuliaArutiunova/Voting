@@ -1,14 +1,18 @@
 package by.it_academy.jd2.dto;
 
-import by.it_academy.jd2.instance.Comment;
+
+import by.it_academy.jd2.entity.Comment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VoteDTO {
 
 
     private Comment comment;
     private InfoFromClientDTO info;
+//    List<Integer> votes = new ArrayList<>();
     LocalDateTime createAt;
 
     public VoteDTO(InfoFromClientDTO info, LocalDateTime createAt) {
@@ -19,38 +23,24 @@ public class VoteDTO {
 
     }
 
+    public Comment getComment() {
+        return comment;
+    }
+
+    public int[] getGenres(){
+        return info.getGenres();
+    }
+    public int getArtist(){
+       return info.getArtist();
+    }
 
     public InfoFromClientDTO getInfo() {
         return info;
     }
 
+
     public LocalDateTime getCreateAt() {
         return createAt;
     }
 
-    public String getArtist() {
-        return info.getArtist();
-    }
-
-    public String[] getGenres() {
-        return info.getGenres();
-    }
-
-    public Comment getComment() {
-        return comment;
-    }
-
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
-
-    @Override
-    public String toString() {
-        return "VoteDTO{" +
-                "comment=" + comment +
-                ", info=" + info +
-                ", createAt=" + createAt +
-                '}';
-    }
 }

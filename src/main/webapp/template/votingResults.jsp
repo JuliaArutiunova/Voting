@@ -15,8 +15,8 @@
                </tr>
              <c:forEach items="${artists}" var="item">
                <tr>
-                 <td style="text-align:center;">${item.getName()}</td>
-                 <td style="text-align:center;">${item.getVotes()}</td>
+                 <td style="text-align:center;">${item.getKey()}</td>
+                 <td style="text-align:center;">${item.getValue()}</td>
                </tr>
              </c:forEach>
 </table>
@@ -28,8 +28,8 @@
                </tr>
              <c:forEach items="${genres}" var="item">
                <tr>
-                  <td style="text-align:center;">${item.getName()}</td>
-                  <td style="text-align:center;">${item.getVotes()}</td>
+                  <td style="text-align:center;">${item.getKey()}</td>
+                  <td style="text-align:center;">${item.getValue()}</td>
                </tr>
              </c:forEach>
 </table>

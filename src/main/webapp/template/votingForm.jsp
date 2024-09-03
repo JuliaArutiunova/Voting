@@ -17,14 +17,14 @@
     <fieldset>
         <legend>Любимый исполнитель</legend>
         <c:forEach items="${artists}" var="item">
-            <input type="radio" name="artist" value="<c:out value="${item}"/>"/><span>${item}</span><br>
+            <input type="radio" name="artist" value="<c:out value="${item.key}"/>"/><span>${item.value}</span><br>
         </c:forEach>
     </fieldset>
     <fieldset>
         <legend>Любиме жанры</legend>
         <p>Выберите 3-5 жанров:</p>
         <c:forEach items="${genres}" var="item">
-            <input type="checkbox" name="genre" value="<c:out value="${item}"/>"/><span>${item}</span></br>
+            <input type="checkbox" name="genre" value="<c:out value="${item.key}"/>"/><span>${item.value}</span></br>
         </c:forEach>
     </fieldset>
     <fieldset>

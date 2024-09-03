@@ -1,28 +1,25 @@
 package by.it_academy.jd2.service;
 
-
 import by.it_academy.jd2.dto.InfoFromClientDTO;
-import by.it_academy.jd2.dto.NamesDTO;
-import by.it_academy.jd2.storage.api.IVotingStorage;
-import by.it_academy.jd2.storage.VotingStorage;
-import by.it_academy.jd2.dto.VoteDTO;
 import by.it_academy.jd2.dto.ResultsDTO;
+import by.it_academy.jd2.dto.VoteDTO;
 import by.it_academy.jd2.service.api.IVotingService;
+import by.it_academy.jd2.storage.VotingStorage;
 
 import java.time.LocalDateTime;
 
 public class VotingService implements IVotingService {
     private static final VotingService instance = new VotingService();
-    IVotingStorage votingStorage = VotingStorage.getInstance();
+    private final VotingStorage votingStorage = VotingStorage.getInstance();
 
     private VotingService() {
     }
 
     @Override
-    public void create(InfoFromClientDTO dto) {
-        int numberOfGenres = dto.getGenres().length;
+    public void create(InfoFromClientDTO infoFromClientDTO) {
+        int numberOfGenres = infoFromClientDTO.getGenres().length;
 
-        if (dto.getName().isBlank()) {
+        if (infoFromClientDTO.getName().isBlank()) {
             throw new IllegalArgumentException("Имя не введено");
         }
         if (numberOfGenres == 0) {
@@ -31,25 +28,18 @@ public class VotingService implements IVotingService {
         if (numberOfGenres > 5 || numberOfGenres < 3) {
             throw new IllegalArgumentException("Выбрано неверное количество жанров");
         }
-        if (dto.getComment().isBlank()) {
+        if (infoFromClientDTO.getComment().isBlank()) {
             throw new IllegalArgumentException("Оставьте комментарий");
         }
-        votingStorage.create(new VoteDTO(dto,LocalDateTime.now()));
+        votingStorage.create(new VoteDTO(infoFromClientDTO, LocalDateTime.now()));
 
     }
+    public ResultsDTO getResults(){
+        return votingStorage.get();
 
-    public ResultsDTO getResults() {
-        return VotingStorage.getInstance().getInfo();
     }
-
-    public NamesDTO getNames() {
-        return VotingStorage.getInstance().getNames();
-    }
-
 
     public static VotingService getInstance() {
         return instance;
     }
-
-
 }
